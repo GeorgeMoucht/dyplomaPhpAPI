@@ -9,6 +9,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    protected $redirectTo = '/';
     //
     public function register(Request $request)
     {
@@ -38,6 +39,8 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
+
+        // validate that this user actually exists.
 
 
         // Authenticate user
