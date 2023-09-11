@@ -25,6 +25,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'is_admin' => false,
         ]);
 
         // Generate and return JWT token
@@ -41,14 +42,24 @@ class AuthController extends Controller
         ]);
 
         // validate that this user actually exists.
+        $user = User::where('email', $request->email)->first();
 
+        if(!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
 
         // Authenticate user
         if(!$token = JWTAuth::attempt($request->only('email','password'))) {
             return response()->json(['error => Unauthorized'], 401);
         }
 
-        return response()->json(['token' => $token]);
+        // Check if user is admin
+        $isAdmin = $user->is_admin;
+
+        return response()->json([
+            'token' => $token,
+            'isAdmin' => $isAdmin
+        ]);
 
     }
 
