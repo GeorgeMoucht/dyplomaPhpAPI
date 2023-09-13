@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\LoginUserRequest;
 use App\Services\UserService;
 
 class AuthController extends Controller
@@ -26,33 +27,16 @@ class AuthController extends Controller
         return response()->json(['token' => $token], 201); // 201 Created
     }
 
-    public function login(Request $request)
+    public function login(LoginUserRequest $request, UserService $userService)
     {
         // Validate user input
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $validatedData = $request->validated();
 
         // validate that this user actually exists.
         $user = User::where('email', $request->email)->first();
 
-        if(!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+        return $userService->loginUser($validatedData);
 
-        // Authenticate user
-        if(!$token = JWTAuth::attempt($request->only('email','password'))) {
-            return response()->json(['error => Unauthorized'], 401);
-        }
-
-        // Check if user is admin
-        $isAdmin = $user->is_admin;
-
-        return response()->json([
-            'token' => $token,
-            'isAdmin' => $isAdmin
-        ]);
 
     }
 
