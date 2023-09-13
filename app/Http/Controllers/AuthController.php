@@ -6,31 +6,24 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Requests\RegisterUserRequest;
+use App\Services\UserService;
 
 class AuthController extends Controller
 {
     protected $redirectTo = '/';
     //
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request, UserService $userService)
     {
-        // Validate user input
-        $this->validate($request, [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+        // Validate the incoming request using the RegisterUserRequest Form Request class.
+        // If we have a problem with the validation, Laravel will auto generate the error message JSON
+        $validatedData = $request->validated();
 
-        // Create new user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'is_admin' => false,
-        ]);
+        // If the email is unique, proceed with user registration
+        $token = $userService->registerUser($validatedData);
 
-        // Generate and return JWT token
-        $token = JWTAuth::fromUser($user);
-        return response()->json(['token' => $token], 201);
+        // Return a JSON response with a JWT token (for successful registration)
+        return response()->json(['token' => $token], 201); // 201 Created
     }
 
     public function login(Request $request)
