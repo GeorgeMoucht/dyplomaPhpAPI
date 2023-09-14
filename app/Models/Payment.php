@@ -11,14 +11,13 @@ class Payment extends Model
     protected $primaryKey = 'customerNumber';
 
     protected $fillable = [
-        'customerNumber',
         'checkNumber',
         'paymentDate',
         'amount',
     ];
 
     // Define relationships
-    public function customers()
+    public function customer()
     {
         return $this->hasMany(Customer::class, 'customerNumber', 'customerNumber');
     }

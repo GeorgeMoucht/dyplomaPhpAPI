@@ -11,7 +11,6 @@ class ProductLine extends Model
     protected $primaryKey = 'productLine';
 
     protected $fillable = [
-        'productLine',
         'textDescription',
         'htmlDescription',
         'image'

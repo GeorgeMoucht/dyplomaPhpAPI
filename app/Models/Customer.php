@@ -25,7 +25,11 @@ class Customer extends Model
         'creditLimit',
     ];
 
-    // Define relationships
+    public function salesRepresentative()
+    {
+        return $this->belongsTo(Employee::class, 'salesRepEmployeeNumber', 'employeeNumber');
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class, 'customerNumber', 'customerNumber');
@@ -34,10 +38,5 @@ class Customer extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class, 'customerNumber', 'customerNumber');
-    }
-
-    public function employees()
-    {
-        return $this->hasMany(Employee::class, 'salesRepEmployeeNumber', 'employeeNumber');
     }
 }

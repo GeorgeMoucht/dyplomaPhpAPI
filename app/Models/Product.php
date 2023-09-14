@@ -11,7 +11,6 @@ class Product extends Model
     protected $primaryKey = 'productCode';
 
     protected $fillable = [
-        'productCode',
         'productName',
         'productLine',
         'productScale',
@@ -25,11 +24,11 @@ class Product extends Model
     // Define relationships
     public function orderDetails()
     {
-        return $this->hasMany(OrderDetail::class, 'orderNumber', 'orderNumber');
+        return $this->hasMany(OrderDetail::class, 'productCode', 'productCode');
     }
 
-    public function productLines()
+    public function productLine()
     {
-        return $this->hasMany(ProductLine::class, 'productLine', 'productLine');
+        return $this->belongsTo(ProductLine::class, 'productLine', 'productLine');
     }
 }

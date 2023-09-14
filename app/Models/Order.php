@@ -11,7 +11,6 @@ class Order extends Model
     protected $primaryKey = 'orderNumber';
 
     protected $fillable = [
-        'orderNumber',
         'orderDate',
         'requiredDate',
         'shippedDate',
@@ -28,6 +27,6 @@ class Order extends Model
 
     public function customers()
     {
-        return $this->hasMany(Customer::class, 'customerNumber', 'customerNumber');
+        return $this->belongsTo(Customer::class, 'customerNumber', 'customerNumber');
     }
 }

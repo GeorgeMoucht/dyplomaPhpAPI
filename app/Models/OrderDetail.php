@@ -11,7 +11,6 @@ class OrderDetail extends Model
     protected $primaryKey = 'orderNumber';
 
     protected $fillable = [
-        'orderNumber',
         'productCode',
         'quantityOrdered',
         'priceEach',
@@ -19,13 +18,13 @@ class OrderDetail extends Model
     ];
 
     // Define relationships
-    public function orders()
+    public function order()
     {
-        return $this->hasMany(Order::class, 'orderNumber', 'orderNumber');
+        return $this->belongsTo(Order::class, 'orderNumber', 'orderNumber');
     }
 
-    public function products()
+    public function product()
     {
-        return $this->hasMany(Product::class, 'productCode', 'productCode');
+        return $this->belongsTo(Product::class, 'productCode', 'productCode');
     }
 }
