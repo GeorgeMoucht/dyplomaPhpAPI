@@ -38,6 +38,6 @@ class Customer extends Model
 
     public function employees()
     {
-        return $this->hasMany(Employee::class, 'employeeNumber', 'salesRepEmployeeNumber');
+        return $this->hasMany(Employee::class, 'salesRepEmployeeNumber', 'employeeNumber');
     }
 }
