@@ -14,12 +14,17 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * The table associated with the model
+     */
+    protected $table = 'users';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'user_id',
         'email',
         'password',
     ];
@@ -34,15 +39,7 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+
 
     /**
      * Get the indetifier that will be stored in the subject claim of the JWT. 
@@ -57,11 +54,21 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
     /**
      * Return the key value array, containing any cunstom claim to be added to the JWT.
      * 
+     * For example here we will return the permission group of the user.
+     * 
      * @return array
     */
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Define the many-to-many relationship between User and Group
+     */
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'user_has_group', 'user_id', 'group_id');
     }
 
 }
