@@ -18,13 +18,13 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
      */
     protected $table = 'users';
 
+    protected $primaryKey = 'user_id';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
         'email',
         'password',
     ];
@@ -64,11 +64,17 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
     }
 
     /**
-     * Define the many-to-many relationship between User and Group
+     * Associate multiple user groups
+     * with a user using the 'groups'
+     * relationship
      */
-    public function groups()
+    public function hasGroups()
     {
         return $this->belongsToMany(Group::class, 'user_has_group', 'user_id', 'group_id');
     }
 
+    /**
+     * Associate multiple groups 
+     * with a groups relationship
+     */
 }
