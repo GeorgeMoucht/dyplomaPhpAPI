@@ -76,4 +76,9 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
     {
         return $this->hasMany(UserHasGroup::class);
     }
+
+    public function userHasPermission(): HasMany
+    {
+        return $this->hasMany(UserHasPermission::class);
+    }
 }

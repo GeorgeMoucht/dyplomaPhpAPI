@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserHasGroup extends Model
+
+class UserHasPermission extends Model
 {
     use HasFactory;
 
     /**
      * The table associated with the model
      */
-    protected $table = 'user_has_groups';
+    protected $table = 'user_has_permission';
 
     /**
      * The attributes that are mass assignable.
@@ -22,25 +23,22 @@ class UserHasGroup extends Model
      */
     protected $fillable = [
         'user_id',
-        'group_id',
+        'permit_id',
     ];
 
     /**
-     * Get the permission groups
-     * that users has.
+     * 
      */
-    public function group(): BelongsTo
+    public function permission(): BelongsTo
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Permission::class);
     }
 
-    
     /**
-     * Get the user that belongs to this group.
+     * 
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    
 }

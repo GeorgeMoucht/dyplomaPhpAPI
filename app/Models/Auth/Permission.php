@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Group extends Model
+
+class Permission extends Model
 {
     use HasFactory;
 
     /**
      * The table associated with the model
      */
-    protected $table = 'groups';
-
-    protected $primaryKey = 'id';
+    protected $table = 'permissions';
 
     /**
      * The attributes that are mass assignable.
@@ -23,19 +22,12 @@ class Group extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'groupName',
-        'created_at',
-        'updated_at',
+        'permName',
     ];
 
-
-    /**
-     * Get the users for the group of permissions.
-     */
-
-    public function userHasGroups(): HasMany
+    public function userHasPermissions(): HasMany
     {
-        return $this->hasMany(UserHasGroup::class);
+        return $this->hasMany(UserHasPermissions::class);
     }
 
     public function groupHasPermissions(): HasMany
