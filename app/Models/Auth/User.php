@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class User extends Authenticatable implements JWTSubject // Implement JWTSubject
 {
@@ -19,7 +21,7 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
      */
     protected $table = 'users';
 
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +30,8 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
     protected $fillable = [
         'email',
         'password',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -65,17 +69,11 @@ class User extends Authenticatable implements JWTSubject // Implement JWTSubject
     }
 
     /**
-     * Associate multiple user groups
-     * with a user using the 'groups'
-     * relationship
+     * Get the users for the group of permissions.
      */
-    public function hasGroups()
-    {
-        return $this->belongsToMany(Group::class, 'user_has_group', 'user_id', 'group_id');
-    }
 
-    /**
-     * Associate multiple groups 
-     * with a groups relationship
-     */
+    public function userHasGroups(): HasMany
+    {
+        return $this->hasMany(UserHasGroup::class);
+    }
 }

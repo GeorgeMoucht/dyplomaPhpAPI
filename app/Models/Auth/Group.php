@@ -4,33 +4,37 @@ namespace App\Models\Auth;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Group extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with this model.
-     *
-     * @var string
+     * The table associated with the model
      */
-    protected $table = "groups";
-    /**
-     * The attributes that are mass assignable.
-     * 
-     * @var array
-     */
-    protected $fillable = [
-        'group_id',
-        'groupName',
-    ];
+    protected $table = 'groups';
+
+    protected $primaryKey = 'id';
 
     /**
-     * Define the one-to-many relationship 
-     * between Group and UserGroup.
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
      */
-    public function userGroups()
+    protected $fillable = [
+        'groupName',
+        'created_at',
+        'updated_at',
+    ];
+
+
+    /**
+     * Get the users for the group of permissions.
+     */
+
+    public function userHasGroups(): HasMany
     {
-        return $this->hasMany(UserGroup::class, 'group_id');
+        return $this->hasMany(UserHasGroup::class);
     }
 }
